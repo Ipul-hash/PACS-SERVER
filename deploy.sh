@@ -16,11 +16,14 @@ echo "IP Server terdeteksi: $SERVER_IP"
 echo "Memulai proses instalasi..."
 
 apt-get update -y
-apt-get install -y nginx orthanc
+apt-get install -y nginx orthanc orthanc-dicomweb
 
 cp -r $REPO_DIR/nginx/* /etc/nginx/sites-available/
 
-sed -i "s/_SERVER_IP_/$SERVER_IP/g" /etc/nginx/sites-available/*
+sed -i "s/_IP_SERVER_/$SERVER_IP/g" /etc/nginx/sites-available/pacs
+
+rm -f /etc/nginx/sites-enabled/default
+ln -sf /etc/nginx/sites-available/pacs /etc/nginx/sites-enabled/
 
 cp -r $REPO_DIR/orthanc/* /etc/orthanc/
 chown -R orthanc:orthanc /etc/orthanc/
